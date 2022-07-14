@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CALCULATOR</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div class="calculator">
+      <p>MADHUFX056</p>
+      <input type="text" placeholder="0" id="output-screen">
+      <button onclick="Clear()">C</button>
+      <button onclick="del()">D</button>
+      <button onclick="display('%')">%</button>
+      <button onclick="display('^')" >^</button>
+      <button onclick="display('7')">7</button>
+      <button onclick="display('8')">8</button>
+      <button onclick="display('9')">9</button>
+      <button onclick="display('+')">+</button>
+      <button onclick="display('4')">4</button>
+      <button onclick="display('5')">5</button>
+      <button onclick="display('6')">6</button>
+      <button onclick="display('-')">-</button>
+      <button onclick="display('3')">3</button>
+      <button onclick="display('2')">2</button>
+      <button onclick="display('1')">1</button>
+      <button onclick="display('*')">*</button>
+      <button onclick="display('0')">0</button>
+      <button onclick="display('00')">00</button>
+      <button onclick="Calculate()" >=</button>
+      <button onclick="display('/')">/</button>
+  </div>
+</div>
+  </body>
+<script>
+  let outputScreen=document.getElementById("output-screen");
+  var out="";
+  function display(num)
+  {
+    outputScreen.value+=num;
+    out=out+num;
+  }
+  function Calculate()
+  {
+    var numbers = out.split(/\+|\-|\*|\/|\%|\^/g);
+    var operators = out.replace(/[0-9]/g, "").split("");
+    console.log(numbers);
+    console.log(operators);
+    try
+    {
+    var pow = operators.indexOf("^");
+    while (pow != -1)
+     {
+     numbers.splice(pow, 2,Math.pow(numbers[pow], numbers[pow + 1]));
+     operators.splice(pow, 1);
+     pow = operators.indexOf("^");
+     }
+    var modulo = operators.indexOf("%");
+    while (modulo != -1)
+     {
+      if( numbers[modulo + 1]>0)
+        numbers.splice(modulo, 2, numbers[modulo] % numbers[modulo + 1]);
+      else
+        numbers.splice(modulo,2,1);
+     operators.splice(modulo, 1);
+     modulo = operators.indexOf("%");
+     }
+    var divide = operators.indexOf("/");
+    while (divide != -1)
+     {
+     numbers.splice(divide, 2, numbers[divide] / numbers[divide + 1]);
+     operators.splice(divide, 1);
+     divide = operators.indexOf("/");
+     }
+    var multiply = operators.indexOf("*");
+    while (multiply != -1)
+     {
+     numbers.splice(multiply, 2, numbers[multiply] * numbers[multiply + 1]);
+     operators.splice(multiply, 1);
+     multiply = operators.indexOf("*");
+     }
+    var subtract = operators.indexOf("-");
+    while (subtract != -1)
+    {
+    numbers.splice(subtract, 2, numbers[subtract] - numbers[subtract + 1]);
+    operators.splice(subtract, 1);
+    subtract = operators.indexOf("-");
+    }
+   var add = operators.indexOf("+");
+   while (add != -1)
+   {
+    numbers.splice(add, 2, parseFloat(numbers[add]) + parseFloat(numbers[add + 1]));  //which index,how many index, value
+    operators.splice(add, 1);
+    add = operators.indexOf("+");
+   }
+   if(isNaN(numbers[0]))
+   throw alert("Enter in correct format");
+  }
+  catch(err)
+  {
+   console.log(err);
+  }
+  console.log(numbers[0]);
+   outputScreen.value = numbers[0];
+   console.log(outputScreen);
+  }
+  function Clear(){
+      outputScreen.value="";
+      out="";
+    }
+  function del(){
+    outputScreen.value=outputScreen.value.slice(0,-1);
+  }
+</script>
+</html>
